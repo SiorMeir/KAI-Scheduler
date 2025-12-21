@@ -9,7 +9,10 @@ KAI Scheduler allows administrators of Kubernetes clusters to dynamically alloca
 KAI Scheduler supports the entire AI lifecycle, from small, interactive jobs that require minimal resources to large training and inference, all within the same cluster. 
 It ensures optimal resource allocation while maintaining resource fairness between the different consumers.
 It can run alongside other schedulers installed on the cluster.
+\
+ogjerpogjheprgperg
 
+lwjgpengpoer
 ## Latest News 🔥
 
 - [2025/11] **KubeCon NA 2025 Talk:** Watch the recording of the presentation "[Lightning Talk: Mind the Topology: Smarter Scheduling for AI Workloads on Kubernetes](https://youtu.be/o5i7pTWZjfo?si=su5iTOAS4r4O1TPa)" to learn how KAI's Topology-Aware Scheduling (TAS) optimizes placement for modern disaggregated serving architectures.
