@@ -157,9 +157,18 @@ PR titles must follow semantic format: `<type>(<scope>): <description>`
 When opening a PR, use the template in .github/pull_request_template.md for the PR description
 
 ### Changelog Requirements
-- Changelog entries are managed as [changie](https://changie.dev) fragments, not by editing `CHANGELOG.md`. Run `make changelog` to add a fragment under `.changes/unreleased/` for PRs to `main` or version branches (`v*.*`) for behavior changes: ones that add functionality, fix bugs, change APIs, or introduce significant performance improvements. Not needed for refactors, documentations, tests, and CI changes.
-- Never edit `CHANGELOG.md` directly — it is the source of truth for released versions. Pending entries live in `.changes/unreleased/` as fragments until release. At release, a maintainer dispatches the **Release — Prepare Changelog** workflow, which folds the pending fragments into `CHANGELOG.md` (clearing them) via a PR; merging that PR auto-tags the version and publishes the GitHub Release. On `main` it describes non-patch releases (minor/major); on `v*.*` branches it describes that line's patch releases.
-- Add `skip-changelog` or `dependencies` label to skip this check
+
+Changelog entries are [changie](https://changie.dev) fragments. **Never edit `CHANGELOG.md` directly** — it is the source of truth for released versions and is only written at release time.
+
+```bash
+make changelog                          # add an entry: writes a fragment under .changes/unreleased/
+make changelog-preview VERSION=v0.17.0  # optional: preview what the next release section will look like
+```
+
+- Add a fragment on every PR that changes behavior (adds functionality, fixes a bug, changes an API, or gives a significant perf win). Skip it for refactors, docs, tests, and CI changes — apply the `skip-changelog` (or `dependencies`) label instead. CI fails a behavior PR that has neither.
+- Commit the fragment with your code. Fragments never conflict between PRs or backports, so no coordination is needed.
+
+**Releasing (maintainers):** don't fold the changelog by hand. Dispatch the **Release — Prepare Changelog** workflow with a version (e.g. `v0.17.0`) from the target branch — `main` for a minor/major, a `v*.*` branch for a patch. It folds the pending fragments into `CHANGELOG.md`, clears them, and opens a PR. Merging that PR auto-tags the version and publishes the GitHub Release.
 
 ### CI Checks (on-pr.yaml)
 PRs trigger: `make validate` → `make test` → `make build` → E2E tests
