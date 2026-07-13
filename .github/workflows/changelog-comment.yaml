@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # After a PR that added changelog fragment(s) is merged, KAIBOT comments on the PR with a
-# link to each fragment. CHANGELOG.md is only regenerated at release time
+# link to each fragment. Pending fragments are folded into CHANGELOG.md at release time
 # (`make changelog-release`), so this confirms to the contributor that their entry was
 # recorded even though CHANGELOG.md did not change in the PR.
 #
@@ -45,7 +45,7 @@ jobs:
           {
             echo "### 📝 Changelog fragment recorded"
             echo ""
-            echo "Thanks! This PR added the changelog fragment(s) below. \`CHANGELOG.md\` is regenerated from fragments at **release time**, so it was intentionally not modified by this PR — your entry will appear in the next release:"
+            echo "Thanks! This PR added the changelog fragment(s) below. Pending fragments are folded into \`CHANGELOG.md\` at **release time**, so it was intentionally not modified by this PR — your entry will appear in the next release:"
             echo ""
             while IFS= read -r f; do
               [ -z "$f" ] && continue

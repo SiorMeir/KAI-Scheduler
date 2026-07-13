@@ -120,14 +120,14 @@ changelog: changie ## Add a changelog entry as a fragment (interactive). Use ins
 	$(CHANGIE) new
 
 .PHONY: changelog-release
-changelog-release: changie ## Fold unreleased fragments into VERSION and regenerate CHANGELOG.md. Usage: make changelog-release VERSION=v0.17.0
+changelog-release: changie ## Fold unreleased fragments into CHANGELOG.md as VERSION and clear them. Usage: make changelog-release VERSION=v0.17.0
 	@test -n "$(VERSION)" || { echo "VERSION is required, e.g. make changelog-release VERSION=v0.17.0"; exit 1; }
-	$(CHANGIE) batch $(VERSION)
-	$(CHANGIE) merge
+	CHANGIE=$(CHANGIE) bash hack/changelog-fold.sh $(VERSION)
 
-.PHONY: changelog-regen
-changelog-regen: changie ## Regenerate CHANGELOG.md from the released version files.
-	$(CHANGIE) merge
+.PHONY: changelog-preview
+changelog-preview: changie ## Preview the next release section without writing anything. Usage: make changelog-preview VERSION=v0.17.0
+	@test -n "$(VERSION)" || { echo "VERSION is required, e.g. make changelog-preview VERSION=v0.17.0"; exit 1; }
+	$(CHANGIE) batch $(VERSION) --dry-run
 
 
 KUSTOMIZE_INSTALL_SCRIPT ?= "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"

@@ -158,7 +158,7 @@ When opening a PR, use the template in .github/pull_request_template.md for the 
 
 ### Changelog Requirements
 - Changelog entries are managed as [changie](https://changie.dev) fragments, not by editing `CHANGELOG.md`. Run `make changelog` to add a fragment under `.changes/unreleased/` for PRs to `main` or version branches (`v*.*`) for behavior changes: ones that add functionality, fix bugs, change APIs, or introduce significant performance improvements. Not needed for refactors, documentations, tests, and CI changes.
-- Never edit `CHANGELOG.md` directly — it shows released versions only and is regenerated from `.changes/` fragments at release time (`make changelog-release`); pending entries stay in `.changes/unreleased/` until then. On `main` it describes non-patch releases (minor/major); on `v*.*` branches it describes that line's patch releases.
+- Never edit `CHANGELOG.md` directly — it is the source of truth for released versions. Pending entries live in `.changes/unreleased/` as fragments until release. At release, a maintainer dispatches the **Release — Prepare Changelog** workflow, which folds the pending fragments into `CHANGELOG.md` (clearing them) via a PR; merging that PR auto-tags the version and publishes the GitHub Release. On `main` it describes non-patch releases (minor/major); on `v*.*` branches it describes that line's patch releases.
 - Add `skip-changelog` or `dependencies` label to skip this check
 
 ### CI Checks (on-pr.yaml)
