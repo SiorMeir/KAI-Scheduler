@@ -3,6 +3,8 @@ unreleasedDir: unreleased
 headerPath: header.tpl.md
 changelogPath: CHANGELOG.md
 versionExt: md
+# Timestamped, non-serial filenames so concurrent PRs and backports never collide.
+fragmentFileFormat: '{{.Kind}}-{{.Time.Format "20060102-150405"}}'
 versionFormat: '## [{{.Version}}] - {{.Time.Format "2006-01-02"}}'
 kindFormat: '### {{.Kind}}'
 changeFormat: '- {{.Body}}{{if .Custom.Issue}} [#{{.Custom.Issue}}](https://github.com/kai-scheduler/KAI-Scheduler/issues/{{.Custom.Issue}}){{end}}{{if .Custom.Author}} [{{.Custom.Author}}](https://github.com/{{.Custom.Author}}){{end}}'
