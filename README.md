@@ -19,7 +19,10 @@ KAI Scheduler allows administrators of Kubernetes clusters to dynamically alloca
 KAI Scheduler supports the entire AI lifecycle, from small, interactive jobs that require minimal resources to large training and inference, all within the same cluster. 
 It ensures optimal resource allocation while maintaining resource fairness between the different consumers.
 It can run alongside other schedulers installed on the cluster.
+\
+ogjerpogjheprgperg
 
+lwjgpengpoer
 ## Latest News 🔥
 
 - [2026/04] **KubeCon EU 2026 Talk:** Watch the recording of the presentation "[GPU Reservations: Maximizing Utilization and Fairness Across Teams](https://www.youtube.com/watch?v=O-OEqmvCkYg)", to explore how KAI Scheduler manages GPU resource reservations to balance utilization and fairness across teams.
