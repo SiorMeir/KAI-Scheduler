@@ -150,9 +150,55 @@ PR titles must follow conventional commit format: `<type>(<scope>): <description
 
 **Scopes** (optional): `scheduler`, `binder`, `podgrouper`, `admission`, `operator`, `queue-controller`, `pod-group-controller`, `resource-reservation`, `chart`, `api`, `node-scale-adjuster`, `ci`, `release`, `docs`, `deps`
 
-### PR Description format
+### Issues and PRs: write for a busy maintainer
 
-When opening a PR, use the template in .github/pull_request_template.md for the PR description
+Maintainers read many of these. Short, specific, and verifiable beats long and thorough.
+Every sentence must carry information a reviewer cannot get from the diff or the title.
+
+**Rules for both**
+- Open an issue before the PR, and link it (`Fixes #123`) in the PR description. CI blocks PRs with no linked issue (`Require Linked Issue`). Search existing issues first; do not file duplicates.
+- Use the templates in `.github/ISSUE_TEMPLATE/` and `.github/pull_request_template.md`. Delete empty or non-applicable sections instead of filling them with "N/A".
+- Plain, concrete language. No headings for the sake of headings, no emoji, no marketing words ("robust", "comprehensive", "seamless"), no restating the title.
+- Never paste raw LLM output, full logs, or whole files. Link or quote only the relevant lines.
+- State only what was verified. If tests were not run, say so; do not claim "all tests pass".
+- One concern per issue and per PR. Unrelated cleanups go elsewhere.
+
+**Issues**
+- Title: the symptom or request, under 80 characters.
+- Bug: what happened, what was expected, minimal reproduction, versions. Under ~15 lines.
+- Feature: the problem first, then the proposed change. No implementation essay.
+
+Good:
+```
+Title: Scheduler ignores queue limit when gpu-fraction pods share a node
+
+What happened: queue "team-a" has a 2 GPU limit but 3 pods requesting
+gpu-fraction=0.8 were allocated across 2 GPUs of one node.
+Expected: the third pod stays Pending.
+Repro: examples/fractions/limit-repro.yaml (kubectl apply, wait 30s)
+Version: v0.12.1, Kubernetes 1.31
+```
+Bad: a multi-section "Executive Summary / Root Cause Analysis / Impact Assessment / Proposed Solution" document for a one-line bug.
+
+**PRs**
+- Title: conventional commit format (see above).
+- Description: 2-5 sentences or bullets answering *why* the change is needed and *what approach* was taken, plus anything non-obvious a reviewer should check. Do not list changed files or narrate the diff.
+- Keep diffs small. Do not reformat, rename, or refactor code unrelated to the issue.
+- Fill the checklist truthfully; tick only what was actually done.
+
+Good:
+```
+Title: fix(scheduler): respect queue limit for fractional GPU pods
+
+## Description
+Fractional allocations were counted against the node, not the queue, so
+limits were bypassed. Count them in queue usage at allocation time.
+Reviewer note: the preempt path already did this; allocate now matches it.
+
+## Related Issues
+Fixes #1234
+```
+Bad: a description that repeats every changed file, lists generic benefits, and claims "comprehensive testing" without naming a test.
 
 ### Changelog Requirements
 
