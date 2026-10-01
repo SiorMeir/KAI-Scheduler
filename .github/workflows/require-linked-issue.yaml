@@ -25,7 +25,7 @@ jobs:
         if: github.event_name == 'merge_group'
         run: echo "Linked issue was already validated before entering merge queue"
 
-      # Maintainers apply `skip-issue` to opt out. Dependabot, release and backport PRs are exempt.
+      # Exempt: maintainers (MAINTAINERS.md), bots, and PRs a maintainer labels `skip-issue`.
       - name: Check PR closes an issue
         if: >-
           github.event_name == 'pull_request' &&
@@ -39,7 +39,16 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE_REF: ${{ github.base_ref }}
         run: |
+          # Read the list from the base branch so a PR cannot add its author to it.
+          if gh api "repos/$OWNER/$REPO/contents/MAINTAINERS.md?ref=$BASE_REF" --jq .content | base64 -d \
+            | sed -nE 's|.*github\.com/([^)]*).*|\1|p' | grep -Fixq "$PR_AUTHOR"; then
+            echo "Maintainer PRs do not require a linked issue."
+            exit 0
+          fi
+
           count=$(gh api graphql -f owner="$OWNER" -f repo="$REPO" -F pr="$PR_NUMBER" -f query='
             query($owner: String!, $repo: String!, $pr: Int!) {
               repository(owner: $owner, name: $repo) {
@@ -52,5 +61,5 @@ jobs:
             exit 0
           fi
 
-          echo "::error::No linked issue. Open an issue first, then add 'Fixes #<number>' to the PR description (or link it from the Development sidebar and re-run this check). Maintainers can apply the 'skip-issue' label to opt out."
+          echo "::error::No linked issue. Open an issue first, then add 'Fixes #<number>' to the PR description (or link it from the Development sidebar and re-run this check). A maintainer can apply the 'skip-issue' label to opt out."
           exit 1
