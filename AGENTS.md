@@ -163,7 +163,8 @@ Keep them short, specific, and verifiable.
 
 **Issues**
 - Title: the symptom or request, under 80 characters.
-- Add a concrete example of the bug or request: a minimal repro or manifest, expected vs. actual behavior, relevant logs/output, versions.
+- Where possible, illustrate whatever the issue describes (bug or request) with an example, e.g. a manifest, command, or output.
+- Bugs: also include expected vs. actual behavior and versions. Relevant logs and raw output are welcome.
 - Feature requests: the problem first, then the proposed change.
 
 **PRs**
