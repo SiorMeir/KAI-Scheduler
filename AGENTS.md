@@ -150,9 +150,40 @@ PR titles must follow conventional commit format: `<type>(<scope>): <description
 
 **Scopes** (optional): `scheduler`, `binder`, `podgrouper`, `admission`, `operator`, `queue-controller`, `pod-group-controller`, `resource-reservation`, `chart`, `api`, `node-scale-adjuster`, `ci`, `release`, `docs`, `deps`
 
-### PR Description format
+### Issues and PRs
 
-When opening a PR, use the template in .github/pull_request_template.md for the PR description
+Keep them short, specific, and verifiable.
+
+**Both**
+- Open an issue before the PR and link it (`Fixes #123`) in the PR description. CI blocks PRs with no linked issue. Search for duplicates first.
+- Use the templates in `.github/ISSUE_TEMPLATE/` and `.github/pull_request_template.md`. Delete empty sections instead of writing "N/A".
+- Plain, concrete language. No filler, no emoji, no restating the title.
+- State only what was verified. If tests were not run, say so.
+- One concern per issue and per PR.
+
+**Issues**
+- Title: the symptom or request, under 80 characters.
+- Where possible, illustrate whatever the issue describes (bug or request) with an example, e.g. a manifest, command, or output.
+- Bugs: also include expected vs. actual behavior and versions. Relevant logs and raw output are welcome.
+- Feature requests: the problem first, then the proposed change.
+
+**PRs**
+- Title: conventional commit format (see above).
+- Description: 2-5 sentences or bullets on *why* and the chosen approach, plus anything non-obvious for reviewers. Do not narrate the diff or list changed files.
+- No unrelated cleanups or reformatting.
+- Tick only checklist items that were actually done.
+
+Example:
+```
+Title: fix(scheduler): respect queue limit for fractional GPU pods
+
+## Description
+Fractional allocations were counted against the node, not the queue, so
+limits were bypassed. Count them in queue usage at allocation time.
+
+## Related Issues
+Fixes #1234
+```
 
 ### Changelog Requirements
 
